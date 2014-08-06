@@ -179,12 +179,7 @@ void Interpreter::eval_rule() {
         //join relations
         Relation r;
 
-        r = all_relations[0];
-        for (unsigned int i = 1; i < all_relations.size(); i++) {
-            
-            r = r.join(r, all_relations[i]);
-            
-        }
+        r = bigjoin(r, all_relations);
         
         // find where to project on the new relation
         
@@ -198,9 +193,10 @@ void Interpreter::eval_rule() {
         
         r = r.unioning(r, relmap);
         DAT.update_map(rule_id,r);
-        pos.clear();
         Relations_ = DAT.get_relations();
+        pos.clear();
     }
+    
 }
 
 vector<int> Interpreter::find_project_spots(vector<string> scheme, vector<string> rule_head_scheme) {
@@ -209,7 +205,7 @@ vector<int> Interpreter::find_project_spots(vector<string> scheme, vector<string
         for (unsigned int j = 0; j < scheme.size(); j++) {
             if (scheme[j] == rule_head_scheme[i]) {
                 pos.push_back(j);
-                break;
+                //break;
             }
         }
     }
@@ -253,4 +249,15 @@ void Interpreter::convergance() {
         }
     }
     ss << "Converged after " << count << " passes through the Rules." << endl;
+}
+Relation Interpreter::bigjoin(Relation R, vector<Relation> all_relations) {
+    
+    R = all_relations[0];
+    for (unsigned int i = 1; i < all_relations.size(); i++) {
+        
+        R = R.join(R, all_relations[i]);
+        
+    }
+    
+    return R;
 }

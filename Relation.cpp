@@ -202,14 +202,21 @@ Tuple Relation::join_tuple(Tuple T1, Tuple T2, vector<int> pos) {
     
     Tuple tupleTemp;
     
-    for (auto spot : pos) {
-        T2.erase(remove(T2.begin(), T2.end(), T2[spot]));
+    for (auto param : T1) {
+        tupleTemp.push_back(param);
     }
-    for (auto tuple : T1) {
-        tupleTemp.push_back(tuple);
-    }
-    for (auto tuple : T2) {
-        tupleTemp.push_back(tuple);
+    
+    for (unsigned int i = 0; i < T2.size(); i++) {
+        unsigned int count = 0;
+        for (unsigned spot : pos) {
+            if (spot != i) {
+                count++;
+            }
+        }
+        if (count == pos.size()) {
+            tupleTemp.push_back(T2[i]);
+        }
+        //T2.erase(remove(T2.begin(), T2.end(), T2[spot]));
     }
     
     return tupleTemp;

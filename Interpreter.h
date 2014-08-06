@@ -37,6 +37,7 @@ public:
     string yes_no(set<Tuple> set);
     void convergance();
     vector<int> find_project_spots(vector<string> scheme, vector<string> scheme_head);
+    Relation bigjoin(Relation R, vector<Relation> all_relations);
     
 private:
     
